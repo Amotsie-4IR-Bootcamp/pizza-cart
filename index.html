@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <title>Tsepang's Pizza</title>
+  </head>
+  <body>
+    <div class="container" x-data="{ 
+      showCart: false,
+      meatyCramCount:0,
+      chickenCramCount:0,
+      trippleDeckerCount:0,
+      meatyCramPrice:78.99,
+      chickenCramPrice:86.49,
+      trippleDeckerPrice:109.99,
+      paymentAmount:0,
+      paymentMessage:'',
+      pay:false,
+      totalItems(){
+        return this.meatyCramCount + 
+        this.chickenCramCount + 
+        this.trippleDeckerCount;
+      },
+      totalPrice(){
+        return (this.meatyCramCount * this.meatyCramPrice + 
+        this.chickenCramCount * this.chickenCramPrice + 
+        this.trippleDeckerCount * this.trippleDeckerPrice).toFixed(2)
+      },
+      makePayment(){
+        let amount = parseInt(this.paymentAmount);
+        let price = parseInt(this.totalPrice());
+        
+        if(amount == 0){
+          this.paymentMessage = 'Enter Payment Amount..';
+        }
+        if(amount >= price){
+          this.paymentMessage = 'Payment Successful..😎';
+          this.meatyCramCount = 0;
+          this.chickenCramCount = 0;
+          this.trippleDeckerCount = 0;
+          setTimeout(() => {
+            this.pay = false;
+            this.paymentMessage = '';
+            this.paymentAmount = 0;
+
+          }, '4000')
+        } else{
+        this.paymentMessage = 'Payment Failed..😒';
+        }
+      }
+    }">
+      <header>
+        <h2><span>Tsepang's</span> Pizza Place</h2>
+        <div class="cart-icon"@click="showCart=!showCart">
+          <i class="fa fa-cart-arrow-down"></i> <span x-text="totalItems"> 0 </span> Items added
+        </div>
+      </header>
+      <table x-show="showCart" x-cloak x-transition>
+        </tr>
+          <tr>
+            <td colspan="3"><h3>Order Summary</h3></td>
+          </tr>
+          <tr x-show="meatyCramCount">
+            <td>Meaty Cram</td>
+            <td>
+              <span class="round" @click="meatyCramCount++">+</span> 
+              <strong x-text="meatyCramCount"></strong>
+              <span class="round" @click="meatyCramCount--">-</span>
+            </td>
+            <td>R<span x-text="(meatyCramCount*meatyCramPrice).toFixed(2)">0.00</span></td>
+          </tr>
+          <tr x-show="chickenCramCount">
+            <td>Chicken Cram</td>
+            <td>
+              <span class="round" @click="chickenCramCount++">+</span>
+              <strong x-text="chickenCramCount"> </strong> 
+              <span class="round" @click="chickenCramCount--">-</span></td>
+            <td>R<span x-text="(chickenCramCount*chickenCramPrice).toFixed(2)">0</span></td>
+          </tr>
+          <tr x-show="trippleDeckerCount">
+            <td>Tripple Decker</td>
+            <td>
+              <span class="round" @click="trippleDeckerCount++">+</span>
+              <strong x-text="trippleDeckerCount"></strong> 
+              <span class="round" @click="trippleDeckerCount--">-</span></td>
+            <td>R<span x-text="(trippleDeckerCount*trippleDeckerPrice).toFixed(2)">0</span></td>
+          </tr>
+          <tr>
+            <td>Total:</td>
+            <td></td>
+            <td>R<strong x-text="totalPrice">0</strong></td>
+          </tr>
+          <tr x-show="totalPrice()>0" x-cloak x-bind:class="pay? 'hide':''">
+            <td colspan="3"><button @click="pay=true">Checkout</button></td>
+          </tr>
+          <tr x-show="pay">
+            <td colspan="3" class="message" x-text="paymentMessage"><i></i></td>
+          </tr>
+          <tr x-show="pay">
+            <td colspan="2">Payment Amount:</td>
+            <td><input type="number" min="0" x-model="paymentAmount"></td>
+          </tr x-show="pay">
+          <tr x-show="pay">
+            <td colspan="3"><button @click="makePayment()">Pay Now</button></td>
+          </tr>
+        </table>
+
+      <main>
+        <div class="card">
+          <div class="card-top">
+            <div class="info">
+              <h3 class="name">MEATY CRAM-DECKER</h3>
+              <p class="price">R78.99</p>
+            </div>
+            <img src="./img/pizza1.png" />
+          </div>
+          <div class="card-bottom">
+            <button class="card-btn"
+            @click="meatyCramCount++"
+            >Buy</button>
+            <p class="desc">
+              Three layers, three cheeses & a crust crammed with two chicken
+              cheese grillers: our secret cream cheese, ham, spare rib, onion,
+              tomato & herb pizza sauce, BBQ sauce, Tsepang's sauce, cheddar &
+              mozzarella cheese
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <div class="info">
+              <h3 class="name">CHICKEN CRAM-DECKER</h3>
+              <p class="price">R86.49</p>
+            </div>
+            <img src="./img/pizza2.png" />
+          </div>
+
+          <div class="card-bottom">
+            <button class="card-btn"
+            @click="chickenCramCount++"
+            >Buy</button>
+            <p class="desc">
+              Three layers, three cheeses & a crust crammed with two chicken
+              cheese grillers: our secret cream cheese, ham, spare rib, onion,
+              tomato & herb pizza sauce, BBQ sauce, Tsepang's sauce, cheddar &
+              mozzarella cheese
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <div class="info">
+              <h3 class="name">CHILLI TRIPLE-DECKER</h3>
+              <p class="price">R109.99</p>
+            </div>
+            <img src="./img/pizza3.png" />
+          </div>
+          <div class="card-bottom">
+            <button class="card-btn"
+            @click="trippleDeckerCount++"
+            >Buy</button>
+            <p class="desc">
+              Three layers, three cheeses & a crust crammed with two chicken
+              cheese grillers: our secret cream cheese, ham, spare rib, onion,
+              tomato & herb pizza sauce, BBQ sauce, Tsepang's sauce, cheddar &
+              mozzarella cheese
+            </p>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div class="footer-left">
+          <ul>
+            <li>Contact us at: 011-783-2254</li>
+            <li>/twitter</li>
+            <li>/fb</li>
+            <li>/insta</li>
+            <li>@TsepangPizza</li>
+          </ul>
+        </div>
+        <div class="footer-right">
+          <ul>
+            <li>Pizza Plazza</li>
+            <li>Dough Road</li>
+            <li>Base Town</li>
+            <li>2245</li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
