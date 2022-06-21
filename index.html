@@ -10,50 +10,7 @@
     <title>Tsepang's Pizza</title>
   </head>
   <body>
-    <div class="container" x-data="{ 
-      showCart: false,
-      meatyCramCount:0,
-      chickenCramCount:0,
-      trippleDeckerCount:0,
-      meatyCramPrice:78.99,
-      chickenCramPrice:86.49,
-      trippleDeckerPrice:109.99,
-      paymentAmount:0,
-      paymentMessage:'',
-      pay:false,
-      totalItems(){
-        return this.meatyCramCount + 
-        this.chickenCramCount + 
-        this.trippleDeckerCount;
-      },
-      totalPrice(){
-        return (this.meatyCramCount * this.meatyCramPrice + 
-        this.chickenCramCount * this.chickenCramPrice + 
-        this.trippleDeckerCount * this.trippleDeckerPrice).toFixed(2)
-      },
-      makePayment(){
-        let amount = parseInt(this.paymentAmount);
-        let price = parseInt(this.totalPrice());
-        
-        if(amount == 0){
-          this.paymentMessage = 'Enter Payment Amount..';
-        }
-        if(amount >= price){
-          this.paymentMessage = 'Payment Successful..😎';
-          this.meatyCramCount = 0;
-          this.chickenCramCount = 0;
-          this.trippleDeckerCount = 0;
-          setTimeout(() => {
-            this.pay = false;
-            this.paymentMessage = '';
-            this.paymentAmount = 0;
-
-          }, '4000')
-        } else{
-        this.paymentMessage = 'Payment Failed..😒';
-        }
-      }
-    }">
+    <div class="container" x-data="state">
       <header>
         <h2><span>Tsepang's</span> Pizza Place</h2>
         <div class="cart-icon"@click="showCart=!showCart">
@@ -96,16 +53,16 @@
             <td>R<strong x-text="totalPrice">0</strong></td>
           </tr>
           <tr x-show="totalPrice()>0" x-cloak x-bind:class="pay? 'hide':''">
-            <td colspan="3"><button @click="pay=true">Checkout</button></td>
+            <td colspan="3"><button @click="pay=!pay">Checkout</button></td>
           </tr>
-          <tr x-show="pay">
+          <tr x-show="pay && totalPrice()>0">
             <td colspan="3" class="message" x-text="paymentMessage"><i></i></td>
           </tr>
-          <tr x-show="pay">
+          <tr x-show="pay && totalPrice()>0">
             <td colspan="2">Payment Amount:</td>
             <td><input type="number" min="0" x-model="paymentAmount"></td>
-          </tr x-show="pay">
-          <tr x-show="pay">
+          </tr>
+          <tr x-show="pay && totalPrice()>0">
             <td colspan="3"><button @click="makePayment()">Pay Now</button></td>
           </tr>
         </table>
@@ -195,5 +152,7 @@
         </div>
       </footer>
     </div>
+
+    <script src="./index.js"></script>
   </body>
 </html>

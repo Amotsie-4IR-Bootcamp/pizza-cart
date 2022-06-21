@@ -177,6 +177,21 @@ td input {
   width: 60px;
 }
 
+table button {
+  padding: 0.25em 0.75em;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+table button:hover {
+  cursor: pointer;
+  color: rgb(78, 92, 0);
+}
+
+table tr:last-child button {
+  background-color: rgb(171, 243, 171);
+}
+
 /* ----------- large screens ------------------*/
 @media only screen and (min-width: 768px) {
   .container {
