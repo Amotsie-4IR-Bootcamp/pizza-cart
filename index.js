@@ -27,9 +27,9 @@ function State() {
       let price = parseInt(this.totalPrice());
 
       if (amount == 0) {
-        this.paymentMessage = "Enter Payment Amount..";
+        this.paymentMessage = "Enter Payment Amount...";
       } else if (amount >= price) {
-        this.paymentMessage = "Payment Successful..😎";
+        this.paymentMessage = "Payment Successful ✅...Enjoy Your food";
         setTimeout(() => {
           this.pay = false;
           this.paymentMessage = "";
@@ -39,7 +39,7 @@ function State() {
           this.trippleDeckerCount = 0;
         }, "4000");
       } else {
-        this.paymentMessage = "Payment Failed..😒";
+        this.paymentMessage = "Insufficient Funds..❌";
       }
     },
   };
